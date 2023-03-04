@@ -38,7 +38,7 @@ fun MentorListItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "${mentor.lastName} ${mentor.firstName} ${mentor.lastName}",
+                text = "${mentor.lastName} ${mentor.firstName} ${mentor.middleName}",
                 style = MaterialTheme.typography.body1,
                 modifier = Modifier.weight(7f)
             )
