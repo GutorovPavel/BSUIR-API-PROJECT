@@ -12,4 +12,22 @@ data class Mentor(
     val photoLink: String,
     val rank: String? = "",
     val urlId: String
-)
+) {
+    fun doesMatchQuery(query: String): Boolean {
+        val matchingCombinations = listOf(
+//            "$firstName$lastName",
+//            "$firstName $lastName",
+//            "$lastName$firstName",
+//            "$lastName $firstName",
+            "$lastName$firstName$middleName",
+            "$lastName $firstName $middleName",
+            "$rank",
+            "${lastName.first()}${firstName.first()}",
+            "${firstName.first()}${middleName.first()}"
+        )
+
+        return matchingCombinations.any {
+            it.contains(query, ignoreCase = true)
+        }
+    }
+}

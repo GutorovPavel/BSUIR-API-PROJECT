@@ -7,17 +7,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,6 +24,7 @@ import com.example.bsuirmentors.presentation.mentorList.MentorListViewModel
 import com.example.bsuirmentors.presentation.ui.theme.OnBG
 import com.example.bsuirmentors.presentation.ui.theme.OnDarkBG
 
+@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun MentorListScreen(
@@ -35,36 +32,47 @@ fun MentorListScreen(
 ) {
     val state = viewModel.state.value
     var currentMentor = Mentor(emptyList(), "", "", "", "", "", "", "")
+    val mentors by viewModel.mentors.collectAsState()
+    val searchText by viewModel.searchText.collectAsState()
+    val isSearching by viewModel.isSearching.collectAsState()
 
-    Column(Modifier.fillMaxSize()) {
+//    val keyboardController = LocalSoftwareKeyboardController.current
+
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 14.dp)
+    ) {
         //Spacer(modifier = Modifier.height(28.dp))
-        Text(
-            text = "Все преподаватели",
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 60.dp)
+        CustomSearchBar(
+            value = searchText,
+            onValueChange = viewModel::onSearchTextChange
         )
         Box(modifier = Modifier
             .fillMaxSize()
-            .padding(14.dp)
+            .padding(top = 14.dp)
             .background(
                 if (isSystemInDarkTheme()) OnDarkBG else OnBG
             )
         ) {
-            LazyColumn(
-                Modifier
-                    .fillMaxSize()
-
-            ) {
-                items(state.mentors) { mentor ->
-                    MentorListItem(
-                        mentor = mentor,
-                        onItemClick = {
+            if(isSearching || state.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    items(mentors) { mentor ->
+                        MentorListItem(
+                            mentor = mentor,
+                            onItemClick = {
 //                            Toast.makeText(context, it.urlId, Toast.LENGTH_SHORT).show()
-                            viewModel.onItemClick(it)
-                        }
-                    )
-                    Divider()
+                                viewModel.onItemClick(it)
+                            }
+                        )
+                        Divider()
+                    }
                 }
             }
             if(state.error.isNotBlank()) {
@@ -78,9 +86,9 @@ fun MentorListScreen(
                         .align(Alignment.Center)
                 )
             }
-            if(state.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
+//            if(state.isLoading) {
+//                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+//            }
             if(viewModel.isDialogShown) {
                 state.mentors.forEach {
                     if (it.urlId == viewModel.id) {
