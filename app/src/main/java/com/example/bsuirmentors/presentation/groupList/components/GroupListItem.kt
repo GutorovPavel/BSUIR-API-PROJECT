@@ -1,4 +1,4 @@
-package com.example.bsuirmentors.presentation.mentorList.components
+package com.example.bsuirmentors.presentation.groupList.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,14 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
+import androidx.compose.ui.unit.sp
 import com.example.bsuirmentors.common.Constants
-import com.example.bsuirmentors.domain.models.Mentor
+import com.example.bsuirmentors.domain.models.Group
 
 @Composable
-fun MentorListItem(
-    item: Mentor,
-    onItemClick:(Mentor) -> Unit
+fun GroupListItem(
+    item: Group,
+    onItemClick:(Group) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -28,18 +28,15 @@ fun MentorListItem(
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        MentorAvatar(
-            painter = rememberAsyncImagePainter(model = item.photoLink),
-            size = 50
-        )
         Spacer(modifier = Modifier.width(14.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "${item.lastName} ${item.firstName} ${item.middleName}",
+                text = item.name,
                 style = MaterialTheme.typography.body1,
+                fontSize = 18.sp,
                 modifier = Modifier.weight(7f)
             )
             Icon(

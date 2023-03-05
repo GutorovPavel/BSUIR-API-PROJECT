@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -17,6 +18,7 @@ fun MentorAvatar(
 ) {
     Image(
         painter = painter,
+        contentScale = ContentScale.Crop,
         contentDescription = "Mentor Avatar",
         modifier = modifier
             .clip(shape = RoundedCornerShape(100))

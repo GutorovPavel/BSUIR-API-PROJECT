@@ -1,4 +1,4 @@
-package com.example.bsuirmentors.presentation.mentorList.components
+package com.example.bsuirmentors.presentation.groupList.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -15,21 +15,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.bsuirmentors.domain.models.Mentor
+import com.example.bsuirmentors.domain.models.Group
+import com.example.bsuirmentors.presentation.groupList.GroupListViewModel
 import com.example.bsuirmentors.presentation.components.CustomSearchBar
-import com.example.bsuirmentors.presentation.groupList.components.GroupListItem
-import com.example.bsuirmentors.presentation.mentorList.MentorListViewModel
 import com.example.bsuirmentors.presentation.ui.theme.OnBG
 import com.example.bsuirmentors.presentation.ui.theme.OnDarkBG
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun MentorListScreen(
-    viewModel: MentorListViewModel = hiltViewModel()
+fun GroupListScreen(
+    viewModel: GroupListViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    var currentMentor = Mentor(emptyList(), "", "", "", "", "", "", "")
-    val items by viewModel.mentors.collectAsState()
+    var currentItem = Group("")
+    val items by viewModel.groups.collectAsState()
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
 
@@ -54,16 +53,15 @@ fun MentorListScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(items) { mentor ->
-                        MentorListItem(
-                            item = mentor,
+                    items(items) {
+                        GroupListItem(
+                            item = it,
                             onItemClick = {
-//                            Toast.makeText(context, it.urlId, Toast.LENGTH_SHORT).show()
-                                viewModel.onItemClick(it)
+//                                Toast.makeText(context, it.urlId, Toast.LENGTH_SHORT).show()
+//                                viewModel.onItemClick(it)
                             }
                         )
                         Divider()
-
                     }
                 }
             }
@@ -78,17 +76,17 @@ fun MentorListScreen(
                         .align(Alignment.Center)
                 )
             }
-            if(viewModel.isDialogShown) {
-                state.mentors.forEach {
-                    if (it.urlId == viewModel.id) {
-                        currentMentor = it
-                    }
-                }
-                InfoDialog(
-                    mentor = currentMentor,
-                    onDismiss = { viewModel.onDismissDialog() }
-                )
-            }
+//            if(viewModel.isDialogShown) {
+//                state.mentors.forEach {
+//                    if (it.urlId == viewModel.id) {
+//                        currentMentor = it
+//                    }
+//                }
+//                InfoDialog(
+//                    mentor = currentMentor,
+//                    onDismiss = { viewModel.onDismissDialog() }
+//                )
+//            }
         }
 
     }

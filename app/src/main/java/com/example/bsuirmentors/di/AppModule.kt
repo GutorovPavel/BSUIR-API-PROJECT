@@ -1,9 +1,9 @@
 package com.example.bsuirmentors.di
 
 import com.example.bsuirmentors.common.Constants
-import com.example.bsuirmentors.data.remote.MentorApi
-import com.example.bsuirmentors.data.repository.MentorRepositoryImpl
-import com.example.bsuirmentors.domain.repository.MentorRepository
+import com.example.bsuirmentors.data.remote.IISApi
+import com.example.bsuirmentors.data.repository.IISRepositoryImpl
+import com.example.bsuirmentors.domain.repository.IISRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,17 +18,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMentorApi(): MentorApi {
+    fun provideMentorApi(): IISApi {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(MentorApi::class.java)
+            .create(IISApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideMentorRepository(api: MentorApi): MentorRepository {
-        return MentorRepositoryImpl(api)
+    fun provideMentorRepository(api: IISApi): IISRepository {
+        return IISRepositoryImpl(api)
     }
 }

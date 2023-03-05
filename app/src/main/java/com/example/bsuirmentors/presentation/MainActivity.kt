@@ -5,16 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
-import com.example.bsuirmentors.domain.models.Mentor
+import com.example.bsuirmentors.presentation.components.CustomAppBar
 import com.example.bsuirmentors.presentation.mentorList.components.MentorListScreen
+import com.example.bsuirmentors.presentation.searchScreen.SearchScreen
 import com.example.bsuirmentors.presentation.ui.theme.BSUIRMentorsTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +37,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MentorListScreen()
+                    Scaffold(
+                        topBar = { CustomAppBar("IIS Mobile") }
+                    ) {
+                        SearchScreen()
+                    }
                 }
             }
         }
