@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bsuirmentors.domain.models.Group
 import com.example.bsuirmentors.presentation.groupList.GroupListViewModel
 import com.example.bsuirmentors.presentation.components.CustomSearchBar
-import com.example.bsuirmentors.presentation.ui.theme.OnBG
+import com.example.bsuirmentors.presentation.ui.theme.OnLightBg
 import com.example.bsuirmentors.presentation.ui.theme.OnDarkBG
 
 @SuppressLint("UnrememberedMutableState")
@@ -37,14 +37,15 @@ fun GroupListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-//        CustomSearchBar(
-//            value = searchText,
-//            onValueChange = viewModel::onSearchTextChange,
-//        )
+        CustomSearchBar(
+            value = searchText,
+            onValueChange = viewModel::onSearchTextChange,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         Box(modifier = Modifier
             .fillMaxSize()
             .background(
-                if (isSystemInDarkTheme()) OnDarkBG else OnBG
+                if (isSystemInDarkTheme()) OnDarkBG else OnLightBg
             )
         ) {
             if(isSearching || state.isLoading) {

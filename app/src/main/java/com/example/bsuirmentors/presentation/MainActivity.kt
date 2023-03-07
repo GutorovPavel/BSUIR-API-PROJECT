@@ -11,9 +11,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
-import com.example.bsuirmentors.presentation.components.CustomAppBar
-import com.example.bsuirmentors.presentation.mentorList.components.MentorListScreen
-import com.example.bsuirmentors.presentation.searchScreen.SearchScreen
 import com.example.bsuirmentors.presentation.ui.theme.BSUIRMentorsTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,11 +34,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Scaffold(
-                        topBar = { CustomAppBar("IIS Mobile") }
-                    ) {
-                        SearchScreen()
-                    }
+                    MainScreen()
                 }
             }
         }
