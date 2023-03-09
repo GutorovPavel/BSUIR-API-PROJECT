@@ -6,9 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.bsuirmentors.common.Resource
 import com.example.bsuirmentors.domain.models.Mentor
 import com.example.bsuirmentors.domain.usecases.GetAllMentorsUseCase
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -49,17 +52,27 @@ class MentorListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    var isDialogShown by mutableStateOf(false)
-        private set
 
-    var id by mutableStateOf("")
-        private set
+    private val moshi = Moshi.Builder()
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
+    val mentorAdapter = moshi.adapter(Mentor::class.java)
 
-    fun onItemClick(mentor: Mentor) {
-        isDialogShown = true
-        id = mentor.urlId
-    }
-    fun onDismissDialog() { isDialogShown = false }
+//    fun onItemClick(mentor: Mentor) {
+//        val mentorJson = mentorAdapter.toJson(mentor)
+//    }
+
+//    var isDialogShown by mutableStateOf(false)
+//        private set
+
+//    var id by mutableStateOf("")
+//        private set
+
+//    fun onItemClick(mentor: Mentor) {
+//        isDialogShown = true
+//        id = mentor.urlId
+//    }
+//    fun onDismissDialog() { isDialogShown = false }
 
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()

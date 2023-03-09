@@ -17,3 +17,9 @@ sealed class BottomBarScreen(
     object Mentors: BottomBarScreen("mentors", "Преподаватели", Icons.Default.Face)
 }
 
+sealed class DefaultScreen(
+    val route: String
+) {
+    object DetailScreen: DefaultScreen("detail")
+}
+

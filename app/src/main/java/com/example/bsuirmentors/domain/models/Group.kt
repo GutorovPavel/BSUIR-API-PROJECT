@@ -11,6 +11,8 @@ data class Group(
 //    val specialityAbbrev: String,
 //    val specialityDepartmentEducationFormId: Int,
 //    val specialityName: String
+
+    val isFavorite: Boolean? = false
 ) {
     fun doesMatchQuery(query: String): Boolean {
         val matchingCombinations = listOf(

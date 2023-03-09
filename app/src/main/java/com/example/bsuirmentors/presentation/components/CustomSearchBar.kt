@@ -32,7 +32,7 @@ fun CustomSearchBar(
                 isFocused = !isFocused
             },
         maxLines = 1,
-        label = { Text(text = "Найти преподавателя") },
+        label = { Text(text = "Найти...") },
         shape = RoundedCornerShape(70),
         colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Color.Transparent,

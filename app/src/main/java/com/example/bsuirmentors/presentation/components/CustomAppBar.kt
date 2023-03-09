@@ -8,31 +8,33 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomAppBar(
-    title: String = "Title"
+    title: String = "Title",
+    leftIcon: ImageVector? = null,
+    rightIcon: ImageVector? = null,
+    onLeftIconClick:() -> Unit,
+    onRightIconClick:() -> Unit
 ) {
-    val context = LocalContext.current
 
     TopAppBar(
         title = { Text(text = title, textAlign = TextAlign.Center) },
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Login")
+            IconButton(onClick = onLeftIconClick) {
+                leftIcon?.let { Icon(imageVector = it, contentDescription = "Login") }
             }
         },
         backgroundColor = MaterialTheme.colors.background,
-        modifier = Modifier.padding(top = 40.dp),
+        modifier = Modifier.padding(top = 30.dp),
         elevation = 0.dp,
         actions = {
-            IconButton(onClick = {
-                Toast.makeText(context, "Login to use some more features!", Toast.LENGTH_LONG).show()
-            }) {
-                Icon(imageVector = Icons.Default.Menu, contentDescription = "Authorized menu")
+            IconButton(onClick = onRightIconClick) {
+                rightIcon?.let { Icon(imageVector = it, contentDescription = "Authorized menu") }
             }
         }
     )

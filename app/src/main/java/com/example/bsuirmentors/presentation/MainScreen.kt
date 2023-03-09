@@ -1,5 +1,7 @@
 package com.example.bsuirmentors.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -21,7 +23,6 @@ import com.example.bsuirmentors.presentation.components.CustomAppBar
 fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
-        topBar = { CustomAppBar("IIS Mobile") },
         bottomBar = { BottomBar(navController = navController) }
     ) {
         BottomNavGraph(navController = navController)
@@ -33,7 +34,7 @@ fun BottomBar(navController: NavHostController) {
 
     val screens = listOf(
         BottomBarScreen.Groups,
-        BottomBarScreen.Mentors
+        BottomBarScreen.Mentors,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -41,7 +42,7 @@ fun BottomBar(navController: NavHostController) {
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background,
         contentColor = MaterialTheme.colors.onBackground,
-        elevation = 10.dp,
+        elevation = 20.dp,
     ) {
         screens.forEach { screen ->
             AddItem(

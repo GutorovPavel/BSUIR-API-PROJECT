@@ -2,12 +2,13 @@ package com.example.bsuirmentors.presentation.groupList.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,9 @@ fun GroupListItem(
     item: Group,
     onItemClick:(Group) -> Unit
 ) {
+
+    var isFavorite = remember { mutableStateOf(true) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,12 +41,25 @@ fun GroupListItem(
                 text = item.name,
                 style = MaterialTheme.typography.body1,
                 fontSize = 18.sp,
-                modifier = Modifier.weight(7f)
+                modifier = Modifier
+                    .weight(6f)
+                    .align(Alignment.CenterVertically)
             )
+            if(isFavorite.value) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "isFavorite",
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically)
+                )
+            }
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = "Arrow Forward",
-                modifier = Modifier.weight(1f).align(Alignment.CenterVertically)
+                modifier = Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)
             )
         }
     }

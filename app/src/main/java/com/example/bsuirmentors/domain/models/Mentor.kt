@@ -1,5 +1,9 @@
 package com.example.bsuirmentors.domain.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Mentor(
     val academicDepartment: List<String>,
 //    val calendarId: String,
@@ -9,10 +13,12 @@ data class Mentor(
 //    val id: Int,
     val lastName: String,
     val middleName: String,
-    val photoLink: String,
+    val photoLink: String? = "",
     val rank: String? = "",
-    val urlId: String
-) {
+    val urlId: String,
+
+    val isFavorite: Boolean? = false
+): Parcelable {
     fun doesMatchQuery(query: String): Boolean {
         val matchingCombinations = listOf(
 //            "$firstName$lastName",
