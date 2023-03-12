@@ -68,14 +68,6 @@ fun MentorDetailScreen(
                 mentor.rank?.let {
                     Text(text ="${mentor.rank}",fontSize = 16.sp)
                 }
-//                Row(Modifier.fillMaxWidth()) {
-//                    for (i in mentor.academicDepartment) {
-//                        if (i == mentor.academicDepartment.last())
-//                            Text(text = i, fontSize = 16.sp)
-//                        else
-//                            Text(text = "$i, ", fontSize = 16.sp)
-//                    }
-//                }
                 for (i in mentor.academicDepartment) Text(text = "- $i", fontSize = 16.sp)
             }
             Divider(Modifier.padding(top = 12.dp))

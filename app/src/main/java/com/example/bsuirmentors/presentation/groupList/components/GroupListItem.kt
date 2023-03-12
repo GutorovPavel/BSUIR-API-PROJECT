@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bsuirmentors.common.Constants
 import com.example.bsuirmentors.domain.models.Group
+import com.example.bsuirmentors.domain.models.Schedule
 
 @Composable
 fun GroupListItem(
@@ -22,7 +24,7 @@ fun GroupListItem(
     onItemClick:(Group) -> Unit
 ) {
 
-    var isFavorite = remember { mutableStateOf(true) }
+    val isFavorite by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -45,7 +47,7 @@ fun GroupListItem(
                     .weight(6f)
                     .align(Alignment.CenterVertically)
             )
-            if(isFavorite.value) {
+            if(isFavorite) {
                 Icon(
                     imageVector = Icons.Filled.Star,
                     contentDescription = "isFavorite",

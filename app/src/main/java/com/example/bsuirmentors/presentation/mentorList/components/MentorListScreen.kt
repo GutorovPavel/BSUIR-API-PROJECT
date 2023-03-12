@@ -15,25 +15,20 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.bsuirmentors.common.extensions.navigate
-import com.example.bsuirmentors.domain.models.Mentor
 import com.example.bsuirmentors.presentation.components.CustomAppBar
 import com.example.bsuirmentors.presentation.components.CustomSearchBar
 import com.example.bsuirmentors.presentation.components.DefaultScreen
-import com.example.bsuirmentors.presentation.mentorList.MentorListState
 import com.example.bsuirmentors.presentation.mentorList.MentorListViewModel
 import com.example.bsuirmentors.presentation.ui.theme.OnLightBg
 import com.example.bsuirmentors.presentation.ui.theme.OnDarkBG
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun MentorListScreen(
@@ -45,7 +40,6 @@ fun MentorListScreen(
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
 
-    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -56,7 +50,7 @@ fun MentorListScreen(
                 rightIcon = Icons.Default.Menu,
                 onRightIconClick = {},
             )
-        }
+        },
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -86,7 +80,7 @@ fun MentorListScreen(
                                         key = "mentor",
                                         value = mentor
                                     )
-                                    navController.navigate(DefaultScreen.DetailScreen.route)
+                                    navController.navigate(DefaultScreen.MentorDetailScreen.route)
                                 }
                             )
                             Divider()
