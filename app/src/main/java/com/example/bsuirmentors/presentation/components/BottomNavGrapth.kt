@@ -10,6 +10,7 @@ import com.example.bsuirmentors.presentation.groupList.components.GroupListScree
 import com.example.bsuirmentors.presentation.mentorDetail.MentorDetailScreen
 import com.example.bsuirmentors.presentation.mentorList.components.MentorListScreen
 import com.example.bsuirmentors.presentation.schedule.components.ScheduleScreen
+import com.example.bsuirmentors.presentation.scheduleLists.ScheduleListScreen
 
 @Composable
 fun BottomNavGraph(
@@ -17,13 +18,16 @@ fun BottomNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = BottomBarScreen.Groups.route
+        startDestination = DefaultScreen.ScheduleListScreen.route
     ) {
-        composable(route = BottomBarScreen.Groups.route) {
-            GroupListScreen(navController)
-        }
-        composable(route = BottomBarScreen.Mentors.route) {
-            MentorListScreen(navController)
+//        composable(route = BottomBarScreen.Groups.route) {
+//            GroupListScreen(navController)
+//        }
+//        composable(route = BottomBarScreen.Mentors.route) {
+//            MentorListScreen(navController)
+//        }
+        composable(route = DefaultScreen.ScheduleListScreen.route) {
+            ScheduleListScreen(navController = navController)
         }
         composable(route = DefaultScreen.MentorDetailScreen.route) {
             val currentMentor =

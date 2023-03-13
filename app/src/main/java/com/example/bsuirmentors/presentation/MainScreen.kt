@@ -1,15 +1,10 @@
 package com.example.bsuirmentors.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -18,14 +13,32 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bsuirmentors.presentation.components.BottomBarScreen
 import com.example.bsuirmentors.presentation.components.BottomNavGraph
 import com.example.bsuirmentors.presentation.components.CustomAppBar
+import com.example.bsuirmentors.presentation.scheduleLists.ScheduleListScreen
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+//    Scaffold(
+//        bottomBar = { BottomBar(navController = navController) }
+//    ) {
+//        BottomNavGraph(navController = navController)
+//    }
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+//        bottomBar = { BottomBar(navController = navController) }
+//    ) {
+//        BottomNavGraph(navController = navController)
+//    }
+
+    topBar = {
+        CustomAppBar(
+            onLeftIconClick = { },
+            onRightIconClick = { },
+            title = "IIS Mobile"
+        )
+    }
     ) {
         BottomNavGraph(navController = navController)
+//        ScheduleListScreen(navController = navController)
     }
 }
 
