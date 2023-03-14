@@ -1,6 +1,7 @@
 package com.example.bsuirmentors.data.remote.dto
 
 
+import com.example.bsuirmentors.data.local.entities.GroupEntity
 import com.example.bsuirmentors.domain.models.Group
 import com.google.gson.annotations.SerializedName
 

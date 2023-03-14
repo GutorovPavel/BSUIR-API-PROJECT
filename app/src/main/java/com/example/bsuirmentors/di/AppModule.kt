@@ -1,9 +1,16 @@
 package com.example.bsuirmentors.di
 
+import android.app.Application
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.bsuirmentors.common.Constants
+import com.example.bsuirmentors.data.local.Converters
+import com.example.bsuirmentors.data.local.IISDatabase
 import com.example.bsuirmentors.data.remote.IISApi
 import com.example.bsuirmentors.data.repository.IISRepositoryImpl
+import com.example.bsuirmentors.data.util.GsonParser
 import com.example.bsuirmentors.domain.repository.IISRepository
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +25,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMentorApi(): IISApi {
+    fun provideIISApi(): IISApi {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -28,7 +35,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMentorRepository(api: IISApi): IISRepository {
-        return IISRepositoryImpl(api)
+    fun provideIISDatabase(app: Application): IISDatabase {
+        return Room.databaseBuilder(
+            app,
+            IISDatabase::class.java,
+            "iisdb.db"
+        )
+            .addTypeConverter(Converters(GsonParser(Gson())))
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideIISRepository(api: IISApi, db: IISDatabase): IISRepository {
+        return IISRepositoryImpl(api, db.dao)
     }
 }
