@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 fun CustomSearchBar(
     value: String,
     onValueChange:(String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
     var isFocused by remember { mutableStateOf(true) }

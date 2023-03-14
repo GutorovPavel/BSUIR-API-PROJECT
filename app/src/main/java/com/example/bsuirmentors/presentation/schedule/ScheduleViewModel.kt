@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.bsuirmentors.common.Constants
 import com.example.bsuirmentors.common.Resource
 import com.example.bsuirmentors.domain.usecases.GetScheduleByGroupUseCase
-import com.example.bsuirmentors.presentation.mentorList.MentorListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

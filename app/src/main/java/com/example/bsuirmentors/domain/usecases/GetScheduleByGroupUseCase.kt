@@ -14,17 +14,6 @@ import javax.inject.Inject
 class GetScheduleByGroupUseCase @Inject constructor(
     private val repository: IISRepository
 ) {
-//    operator fun invoke(studentGroup: String): Flow<Resource<Schedule>> = flow {
-//        try {
-//            emit(Resource.Loading())
-//            val schedule = repository.getScheduleByGroup(studentGroup).toSchedule()
-//            emit(Resource.Success(schedule))
-//        } catch (e: HttpException) {
-//            emit(Resource.Error(e.localizedMessage ?: "an unexpected error occurred..."))
-//        } catch (e: IOException) {
-//            emit(Resource.Error("Check ur internet connection :("))
-//        }
-//    }
     operator fun invoke(studentGroup: String): Flow<Resource<Schedule>> = flow {
         try {
             emit(Resource.Loading())

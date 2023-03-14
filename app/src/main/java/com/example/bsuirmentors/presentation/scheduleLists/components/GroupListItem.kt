@@ -1,4 +1,4 @@
-package com.example.bsuirmentors.presentation.groupList.components
+package com.example.bsuirmentors.presentation.scheduleLists.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

@@ -17,70 +17,51 @@ import com.example.bsuirmentors.presentation.scheduleLists.ScheduleListScreen
 
 @Composable
 fun MainScreen() {
+
     val navController = rememberNavController()
-//    Scaffold(
-//        bottomBar = { BottomBar(navController = navController) }
+
+    BottomNavGraph(navController = navController)
+}
+
+//@Composable
+//fun BottomBar(navController: NavHostController) {
+//
+//    val screens = listOf(
+//        BottomBarScreen.Groups,
+//        BottomBarScreen.Mentors,
+//    )
+//    val navBackStackEntry by navController.currentBackStackEntryAsState()
+//    val currentDestination = navBackStackEntry?.destination
+//
+//    BottomNavigation(
+//        backgroundColor = MaterialTheme.colors.background,
+//        contentColor = MaterialTheme.colors.onBackground,
+//        elevation = 20.dp,
 //    ) {
-//        BottomNavGraph(navController = navController)
+//        screens.forEach { screen ->
+//            AddItem(
+//                screen = screen,
+//                currentDestination = currentDestination,
+//                navController = navController
+//            )
+//        }
 //    }
-    Scaffold(
-//        bottomBar = { BottomBar(navController = navController) }
-//    ) {
-//        BottomNavGraph(navController = navController)
-//    }
-
-    topBar = {
-        CustomAppBar(
-            onLeftIconClick = { },
-            onRightIconClick = { },
-            title = "IIS Mobile"
-        )
-    }
-    ) {
-        BottomNavGraph(navController = navController)
-//        ScheduleListScreen(navController = navController)
-    }
-}
-
-@Composable
-fun BottomBar(navController: NavHostController) {
-
-    val screens = listOf(
-        BottomBarScreen.Groups,
-        BottomBarScreen.Mentors,
-    )
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    
-    BottomNavigation(
-        backgroundColor = MaterialTheme.colors.background,
-        contentColor = MaterialTheme.colors.onBackground,
-        elevation = 20.dp,
-    ) {
-        screens.forEach { screen ->
-            AddItem(
-                screen = screen,
-                currentDestination = currentDestination,
-                navController = navController
-            )
-        }
-    }
-}
-
-@Composable
-fun RowScope.AddItem(
-    screen: BottomBarScreen,
-    currentDestination: NavDestination?,
-    navController: NavHostController
-) {
-    BottomNavigationItem(
-        label = { Text(text = screen.title) },
-        icon = { Icon(imageVector = screen.icon, contentDescription = "NavIcon") },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.route
-        } == true,
-        onClick = {
-            navController.navigate(screen.route)
-        }
-    )
-}
+//}
+//
+//@Composable
+//fun RowScope.AddItem(
+//    screen: BottomBarScreen,
+//    currentDestination: NavDestination?,
+//    navController: NavHostController
+//) {
+//    BottomNavigationItem(
+//        label = { Text(text = screen.title) },
+//        icon = { Icon(imageVector = screen.icon, contentDescription = "NavIcon") },
+//        selected = currentDestination?.hierarchy?.any {
+//            it.route == screen.route
+//        } == true,
+//        onClick = {
+//            navController.navigate(screen.route)
+//        }
+//    )
+//}

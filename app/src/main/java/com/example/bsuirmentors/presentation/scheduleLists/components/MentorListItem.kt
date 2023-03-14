@@ -1,4 +1,4 @@
-package com.example.bsuirmentors.presentation.mentorList.components
+package com.example.bsuirmentors.presentation.scheduleLists.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.bsuirmentors.common.Constants
 import com.example.bsuirmentors.domain.models.Mentor
+import com.example.bsuirmentors.presentation.scheduleLists.components.MentorAvatar
 
 @Composable
 fun MentorListItem(
