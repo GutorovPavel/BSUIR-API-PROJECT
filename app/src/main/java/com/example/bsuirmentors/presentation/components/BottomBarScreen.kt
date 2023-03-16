@@ -22,5 +22,7 @@ sealed class DefaultScreen(
     object ScheduleListScreen: DefaultScreen("scheduleList")
     object MentorDetailScreen: DefaultScreen("detail")
     object ScheduleDetailScreen: DefaultScreen("schedule")
+    object LoginScreen: DefaultScreen("login")
+    object ProfileScreen: DefaultScreen("profile")
 }
 

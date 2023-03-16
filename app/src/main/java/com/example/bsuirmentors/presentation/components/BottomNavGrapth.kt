@@ -5,8 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.bsuirmentors.data.remote.dto.Schedules
+import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
 import com.example.bsuirmentors.domain.models.Mentor
+import com.example.bsuirmentors.presentation.login.LoginScreen
 import com.example.bsuirmentors.presentation.mentorDetail.MentorDetailScreen
+import com.example.bsuirmentors.presentation.profile.ProfileScreen
 import com.example.bsuirmentors.presentation.schedule.components.ScheduleScreen
 import com.example.bsuirmentors.presentation.scheduleLists.ScheduleListScreen
 
@@ -28,6 +31,14 @@ fun BottomNavGraph(
         }
         composable(route = DefaultScreen.ScheduleDetailScreen.route + "/{studentGroup}") {
             ScheduleScreen(navController)
+        }
+        composable(route = DefaultScreen.LoginScreen.route) {
+            LoginScreen(navController)
+        }
+        composable(route = DefaultScreen.ProfileScreen.route) {
+            val currentUser =
+                navController.previousBackStackEntry?.savedStateHandle?.get<AuthUserDto>("user")
+            currentUser?.let { it1 -> ProfileScreen(navController, user = it1) }
         }
     }
 }

@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ScheduleListViewModel @Inject constructor(
     private val getAllMentorsUseCase: GetAllMentorsUseCase,
-    private val getAllGroupsUseCase: GetAllGroupsUseCase
+    private val getAllGroupsUseCase: GetAllGroupsUseCase,
 ): ViewModel() {
 
     private val _state = mutableStateOf(ScheduleListState())

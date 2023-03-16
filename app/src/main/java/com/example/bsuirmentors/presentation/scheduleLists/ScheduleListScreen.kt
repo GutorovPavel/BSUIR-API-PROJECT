@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bsuirmentors.presentation.components.CustomAppBar
 import com.example.bsuirmentors.presentation.components.CustomSearchBar
+import com.example.bsuirmentors.presentation.components.DefaultScreen
 import com.example.bsuirmentors.presentation.scheduleLists.components.GroupList
 import com.example.bsuirmentors.presentation.scheduleLists.components.MentorList
 import com.example.bsuirmentors.presentation.scheduleLists.components.TabItem
@@ -55,9 +56,10 @@ fun ScheduleListScreen(
     val mentorTab = TabItem("Преподаватели") {
         MentorList(navController = navController, list = mentors)
     }
+
     val tabs = listOf(
         groupTab,
-        mentorTab
+        mentorTab,
     )
 
     val pagerState = rememberPagerState(pageCount = tabs.size)
@@ -70,7 +72,10 @@ fun ScheduleListScreen(
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
-            Box(Modifier.fillMaxHeight(0.5f).fillMaxWidth()) {
+            Box(
+                Modifier
+                    .fillMaxHeight(0.5f)
+                    .fillMaxWidth()) {
                 Text(text = "Bottom Sheet View", modifier = Modifier.align(Alignment.Center))
             }
         },
@@ -81,7 +86,9 @@ fun ScheduleListScreen(
         ) {
             CustomAppBar(
                 leftIcon = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = {
+                        navController.navigate(DefaultScreen.LoginScreen.route)
+                    }) {
                         Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "loginButton")
                     }
                 },

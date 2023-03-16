@@ -1,15 +1,15 @@
 package com.example.bsuirmentors.data.repository
 
 import com.example.bsuirmentors.data.local.IISDao
-import com.example.bsuirmentors.data.local.IISDatabase
 import com.example.bsuirmentors.data.local.entities.GroupEntity
 import com.example.bsuirmentors.data.local.entities.MentorEntity
 import com.example.bsuirmentors.data.remote.IISApi
-import com.example.bsuirmentors.data.remote.dto.GroupDto
-import com.example.bsuirmentors.data.remote.dto.MentorDto
-import com.example.bsuirmentors.data.remote.dto.ScheduleDto
-import com.example.bsuirmentors.data.remote.dto.StudentGroup
+import com.example.bsuirmentors.data.remote.dto.*
+import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
+import com.example.bsuirmentors.data.remote.dto.login.LoginRequest
+import com.example.bsuirmentors.data.remote.dto.login.LoginResponse
 import com.example.bsuirmentors.domain.repository.IISRepository
+import retrofit2.Call
 import javax.inject.Inject
 
 class IISRepositoryImpl @Inject constructor(
@@ -54,5 +54,9 @@ class IISRepositoryImpl @Inject constructor(
     //Schedule
     override suspend fun getScheduleByGroup(studentGroup: String): ScheduleDto {
         return api.getScheduleByGroup(studentGroup)
+    }
+
+    override suspend fun login(loginRequest: LoginRequest): AuthUserDto {
+        return api.login(loginRequest)
     }
 }

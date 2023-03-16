@@ -2,11 +2,11 @@ package com.example.bsuirmentors.domain.repository
 
 import com.example.bsuirmentors.data.local.entities.GroupEntity
 import com.example.bsuirmentors.data.local.entities.MentorEntity
-import com.example.bsuirmentors.data.remote.dto.GroupDto
-import com.example.bsuirmentors.data.remote.dto.MentorDto
-import com.example.bsuirmentors.data.remote.dto.ScheduleDto
-import com.example.bsuirmentors.data.remote.dto.StudentGroup
-import com.example.bsuirmentors.domain.models.Group
+import com.example.bsuirmentors.data.remote.dto.*
+import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
+import com.example.bsuirmentors.data.remote.dto.login.LoginRequest
+import com.example.bsuirmentors.data.remote.dto.login.LoginResponse
+import retrofit2.Call
 
 interface IISRepository {
 
@@ -24,5 +24,8 @@ interface IISRepository {
 
     //Schedule
     suspend fun getScheduleByGroup(studentGroup: String): ScheduleDto
+
+    //User
+    suspend fun login(loginRequest: LoginRequest): AuthUserDto
 
 }
