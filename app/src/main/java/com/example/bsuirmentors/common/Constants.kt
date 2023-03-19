@@ -5,4 +5,5 @@ object Constants {
     const val ITEM_HEIGHT = 70
     const val PARAM_STUDENT_GROUP = "studentGroup"
     const val APP = "App"
+    const val COOKIE_PREFS = "COOKIE_PREFS"
 }

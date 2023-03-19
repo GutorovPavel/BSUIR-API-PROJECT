@@ -23,6 +23,7 @@ class GetAllGroupsUseCase @Inject constructor(
         try {
             emit(Resource.Loading())
             val remoteGroups = repository.getGroups().map { it.toGroup() }
+            repository.clearGroupsFromLocal()
             repository.insertGroupsToLocal(remoteGroups.map { it.toGroupEntity() })
 
             val localGroups = repository.getGroupsFromLocal().map { it.toGroup() }

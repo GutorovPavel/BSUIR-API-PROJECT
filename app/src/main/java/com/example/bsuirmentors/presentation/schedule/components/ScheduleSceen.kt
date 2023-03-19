@@ -45,12 +45,14 @@ fun ScheduleScreen(
                         Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "backButton")
                     }
                 },
-                rightIcon = {
+                actions = {
                     IconButton(onClick = {}) {
                         Icon(imageVector = Icons.Default.Star, contentDescription = "starButton")
                     }
                 },
-                title = state.schedule?.studentGroupDto?.name ?: ""
+                title = state.schedule?.studentGroupDto?.name ?: "",
+                backgroundColor = MaterialTheme.colors.background,
+                contentColor = MaterialTheme.colors.onBackground
             )
         },
     ) {

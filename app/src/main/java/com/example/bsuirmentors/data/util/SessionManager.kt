@@ -7,19 +7,19 @@ import com.example.bsuirmentors.common.Constants
 class SessionManager(context: Context) {
 
     private val prefs: SharedPreferences = context
-        .getSharedPreferences(Constants.APP, Context.MODE_PRIVATE)
+        .getSharedPreferences(Constants.COOKIE_PREFS, Context.MODE_PRIVATE)
 
     companion object {
-        const val USER_TOKEN = "user_token"
+        const val CURRENT_COOKIE = "current_cookie"
     }
 
-    fun saveAuthToken(token: String) {
+    fun saveCookie(cookie: HashSet<String>) {
         prefs.edit()
-            .putString(USER_TOKEN, token)
+            .putStringSet(CURRENT_COOKIE, cookie)
             .apply()
     }
 
-    fun fetchAuthToken(): String? {
-        return prefs.getString(USER_TOKEN, null)
+    fun fetchCookie(): MutableSet<String>? {
+        return prefs.getStringSet(CURRENT_COOKIE, null)
     }
 }

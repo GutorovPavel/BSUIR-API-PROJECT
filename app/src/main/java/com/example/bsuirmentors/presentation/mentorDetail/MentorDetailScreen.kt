@@ -32,11 +32,13 @@ fun MentorDetailScreen(
                         Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "backButton")
                     }
                 },
-                rightIcon = {
+                actions = {
                     IconButton(onClick = {}) {
                         Icon(imageVector = Icons.Default.Star, contentDescription = "starButton")
                     }
                 },
+                backgroundColor = MaterialTheme.colors.background,
+                contentColor = MaterialTheme.colors.onBackground
             )
         },
     ) {

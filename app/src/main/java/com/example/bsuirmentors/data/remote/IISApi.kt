@@ -6,10 +6,13 @@ import com.example.bsuirmentors.data.remote.dto.ScheduleDto
 import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
 import com.example.bsuirmentors.data.remote.dto.login.LoginRequest
 import com.example.bsuirmentors.data.remote.dto.login.LoginResponse
+import com.example.bsuirmentors.data.remote.dto.profile.PersonalCvDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -24,7 +27,13 @@ interface IISApi {
     @GET("v1/schedule")
     suspend fun getScheduleByGroup(@Query("studentGroup") studentGroup: String): ScheduleDto
 
+    @GET("v1/schedule/current-week")
+    suspend fun getCurrentWeek(): Int
+
     @POST("v1/auth/login")
     suspend fun login(@Body request: LoginRequest): AuthUserDto
+
+    @GET("v1/profiles/personal-cv")
+    suspend fun getPersonalCv(@Header("Cookie") cookie: MutableSet<String>): PersonalCvDto
 
 }

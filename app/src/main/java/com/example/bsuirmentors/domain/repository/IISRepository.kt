@@ -1,11 +1,13 @@
 package com.example.bsuirmentors.domain.repository
 
+import android.content.Context
 import com.example.bsuirmentors.data.local.entities.GroupEntity
 import com.example.bsuirmentors.data.local.entities.MentorEntity
 import com.example.bsuirmentors.data.remote.dto.*
 import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
 import com.example.bsuirmentors.data.remote.dto.login.LoginRequest
 import com.example.bsuirmentors.data.remote.dto.login.LoginResponse
+import com.example.bsuirmentors.data.remote.dto.profile.PersonalCvDto
 import retrofit2.Call
 
 interface IISRepository {
@@ -23,9 +25,11 @@ interface IISRepository {
     suspend fun clearMentorsFromLocal()
 
     //Schedule
+    suspend fun getCurrentWeek(): Int
     suspend fun getScheduleByGroup(studentGroup: String): ScheduleDto
 
     //User
     suspend fun login(loginRequest: LoginRequest): AuthUserDto
+    suspend fun getPersonalCv(): PersonalCvDto
 
 }

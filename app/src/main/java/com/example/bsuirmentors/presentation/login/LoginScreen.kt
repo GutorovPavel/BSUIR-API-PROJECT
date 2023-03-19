@@ -29,9 +29,6 @@ fun LoginScreen(
     var usernameText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
 
-    val context = LocalContext.current
-    val sessionManager = SessionManager(context)
-
     Box(
         modifier = Modifier
             .padding(20.dp)
@@ -76,19 +73,12 @@ fun LoginScreen(
                 Button(
                     onClick = {
                         viewModel.saveAuthToken(usernameText, passwordText)
-//                        state.user?.let {
-//                            navController.currentBackStackEntry?.savedStateHandle?.set(
-//                                key = "user",
-//                                value = it
-//                            )
-//                        }
-//                        navController.navigate(DefaultScreen.MentorDetailScreen.route)
+                        navController.navigate(DefaultScreen.ProfileScreen.route)
                     },
                 ) {
                     Text(text = "Войти")
                 }
             }
-            Text(text = state.user.toString())            
         }
 
     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bsuirmentors.common.Constants
 import com.example.bsuirmentors.common.Resource
+import com.example.bsuirmentors.domain.usecases.GetCurrentWeekUseCase
 import com.example.bsuirmentors.domain.usecases.GetScheduleByGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ScheduleViewModel @Inject constructor(
     private val getScheduleByGroupUseCase: GetScheduleByGroupUseCase,
+    private val getCurrentWeekUseCase: GetCurrentWeekUseCase,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -26,6 +28,23 @@ class ScheduleViewModel @Inject constructor(
         savedStateHandle.get<String>(Constants.PARAM_STUDENT_GROUP)?.let{
             getSchedule(it)
         }
+        getCurrentWeek()
+    }
+
+    private fun getCurrentWeek() {
+        getCurrentWeekUseCase().onEach {
+            when(it) {
+                is Resource.Success -> {
+                    _state.value = ScheduleState(currentWeek = it.data)
+                }
+                is Resource.Error -> {
+                    _state.value = ScheduleState(error = it.message ?: "An unexpected error occurred...")
+                }
+                is Resource.Loading -> {
+                    _state.value = ScheduleState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun getSchedule(studentGroup: String) {

@@ -1,5 +1,6 @@
 package com.example.bsuirmentors.data.repository
 
+import android.content.Context
 import com.example.bsuirmentors.data.local.IISDao
 import com.example.bsuirmentors.data.local.entities.GroupEntity
 import com.example.bsuirmentors.data.local.entities.MentorEntity
@@ -7,14 +8,15 @@ import com.example.bsuirmentors.data.remote.IISApi
 import com.example.bsuirmentors.data.remote.dto.*
 import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
 import com.example.bsuirmentors.data.remote.dto.login.LoginRequest
-import com.example.bsuirmentors.data.remote.dto.login.LoginResponse
+import com.example.bsuirmentors.data.remote.dto.profile.PersonalCvDto
+import com.example.bsuirmentors.data.util.SessionManager
 import com.example.bsuirmentors.domain.repository.IISRepository
-import retrofit2.Call
 import javax.inject.Inject
 
 class IISRepositoryImpl @Inject constructor(
     private val api: IISApi,
-    private val dao: IISDao
+    private val dao: IISDao,
+    private val sessionManager: SessionManager
 ): IISRepository {
 
     //Groups
@@ -51,12 +53,24 @@ class IISRepositoryImpl @Inject constructor(
         dao.clearMentors()
     }
 
+    override suspend fun getCurrentWeek(): Int {
+        return api.getCurrentWeek()
+    }
+
     //Schedule
     override suspend fun getScheduleByGroup(studentGroup: String): ScheduleDto {
         return api.getScheduleByGroup(studentGroup)
     }
 
+
+    //User
     override suspend fun login(loginRequest: LoginRequest): AuthUserDto {
         return api.login(loginRequest)
+    }
+
+    override suspend fun getPersonalCv(): PersonalCvDto {
+
+        val cookie = sessionManager.fetchCookie()
+        return cookie?.let { api.getPersonalCv(it) }!!
     }
 }

@@ -1,24 +1,30 @@
 package com.example.bsuirmentors.presentation.scheduleLists
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.node.modifierElementOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.bsuirmentors.data.util.SessionManager
 import com.example.bsuirmentors.presentation.components.CustomAppBar
 import com.example.bsuirmentors.presentation.components.CustomSearchBar
 import com.example.bsuirmentors.presentation.components.DefaultScreen
@@ -46,15 +52,21 @@ fun ScheduleListScreen(
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
 
+    val lazyListState1 = rememberLazyListState()
+    val lazyListState2 = rememberLazyListState()
+
+    val context = LocalContext.current
+    val sessionManager = SessionManager(context)
+
     //SCOPE
     val scope = rememberCoroutineScope()
 
     // TABS
     val groupTab = TabItem("Группы") {
-        GroupList(navController = navController, list = groups)
+        GroupList(navController = navController, list = groups, lazyListState = lazyListState1)
     }
     val mentorTab = TabItem("Преподаватели") {
-        MentorList(navController = navController, list = mentors)
+        MentorList(navController = navController, list = mentors, lazyListState = lazyListState2)
     }
 
     val tabs = listOf(
@@ -63,6 +75,13 @@ fun ScheduleListScreen(
     )
 
     val pagerState = rememberPagerState(pageCount = tabs.size)
+
+    val searchBarState = remember { mutableStateOf(true) }
+
+    if (pagerState.currentPage == 0)
+        searchBarState.value = !lazyListState1.isScrolled
+    else
+        searchBarState.value = !lazyListState2.isScrolled
 
     //BOTTOM SHEET
     val bottomSheetState = rememberModalBottomSheetState(
@@ -82,17 +101,34 @@ fun ScheduleListScreen(
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.primary)
         ) {
             CustomAppBar(
                 leftIcon = {
                     IconButton(onClick = {
-                        navController.navigate(DefaultScreen.LoginScreen.route)
+                        if(sessionManager.fetchCookie()?.isEmpty() == true)
+                            navController.navigate(DefaultScreen.LoginScreen.route)
+                        else
+                            navController.navigate(DefaultScreen.ProfileScreen.route)
                     }) {
-                        Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "loginButton")
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "loginButton"
+                        )
                     }
                 },
-                rightIcon = {
+                actions = {
+                    AnimatedVisibility(visible = !searchBarState.value) {
+                        IconButton(onClick = {
+                            scope.launch {
+                                searchBarState.value = true
+                            }
+                        }) {
+                            Icon(imageVector = Icons.Default.Search, contentDescription = "searchButton")
+                        }
+                    }
                     IconButton(onClick = {
                         scope.launch {
                             bottomSheetState.show()
@@ -101,65 +137,84 @@ fun ScheduleListScreen(
                         Icon(imageVector = Icons.Default.Menu, contentDescription = "menuButton")
                     }
                 },
-                title = "IIS BSUIR"
+                title = "IIS BSUIR",
+                contentColor = Color.White
             )
-            CustomSearchBar(
-                value = searchText,
-                onValueChange = viewModel::onSearchTextChange,
+            AnimatedVisibility(
+                visible = searchBarState.value,
+                content = {
+                    CustomSearchBar(
+                        value = searchText,
+                        onValueChange = viewModel::onSearchTextChange,
+                    )
+                }
             )
-            Spacer(Modifier.height(8.dp))
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    if (isSystemInDarkTheme()) OnDarkBG else OnLightBg
-                )
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .background(
+                        if (isSystemInDarkTheme()) OnDarkBG else OnLightBg
+                    )
             ) {
-                if(isSearching || state.isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else {  //tabs
-
-                    Column(Modifier.fillMaxSize()) {
-                        TabRow(
-                            selectedTabIndex = pagerState.currentPage,
-                            backgroundColor = MaterialTheme.colors.background,
-                            contentColor = MaterialTheme.colors.onBackground,
-                            indicator = { tabPositions ->
-                                TabRowDefaults.Indicator(
-                                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-                                )
-                            }
-                        ) {
-                            tabs.forEachIndexed { index, tab ->
-                                Tab(
-                                    selected = pagerState.currentPage == index,
-                                    onClick = {
-                                        scope.launch {
-                                            pagerState.animateScrollToPage(index)
-                                        }
-                                    },
-                                    text = { Text(text = tab.title) }
-                                )
-                            }
-                        }
+                TabRow(
+//                    modifier = Modifier.clip(
+//                        RoundedCornerShape(
+//                            bottomStart = 10.dp,
+//                            bottomEnd = 10.dp
+//                        )
+//                    ),
+                    selectedTabIndex = pagerState.currentPage,
+                    backgroundColor = MaterialTheme.colors.primary,
+                    contentColor = Color.White,
+                    indicator = { tabPositions ->
+                        TabRowDefaults.Indicator(
+                            Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                        )
+                    }
+                ) {
+                    tabs.forEachIndexed { index, tab ->
+                        Tab(
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            },
+                            text = { Text(text = tab.title) }
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            if (isSystemInDarkTheme()) OnDarkBG else OnLightBg
+                        )
+                ) {
+                    if (isSearching || state.isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    } else {  //tabs
                         HorizontalPager(state = pagerState) { page ->
                             tabs[page].screen()
                         }
                     }
-                }
-                if(state.error.isNotBlank()) {
-                    Text(
-                        text = state.error,
-                        color = MaterialTheme.colors.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp)
-                            .fillMaxWidth()
-                            .align(Alignment.Center)
-                    )
+                    if (state.error.isNotBlank()) {
+                        Text(
+                            text = state.error,
+                            color = MaterialTheme.colors.error,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp)
+                                .fillMaxWidth()
+                                .align(Alignment.Center)
+                        )
+                    }
                 }
             }
-
         }
     }
 }
+
+val LazyListState.isScrolled: Boolean
+    get() = firstVisibleItemIndex > 1

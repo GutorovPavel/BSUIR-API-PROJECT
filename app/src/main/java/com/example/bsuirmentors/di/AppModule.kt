@@ -1,19 +1,24 @@
 package com.example.bsuirmentors.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.bsuirmentors.App
 import com.example.bsuirmentors.common.Constants
 import com.example.bsuirmentors.data.local.Converters
 import com.example.bsuirmentors.data.local.IISDatabase
 import com.example.bsuirmentors.data.remote.IISApi
+import com.example.bsuirmentors.data.remote.ReceivedCookieInterceptor
 import com.example.bsuirmentors.data.repository.IISRepositoryImpl
 import com.example.bsuirmentors.data.util.GsonParser
+import com.example.bsuirmentors.data.util.SessionManager
 import com.example.bsuirmentors.domain.repository.IISRepository
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,13 +32,20 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideIISApi(): IISApi {
+    fun provideSessionManager(@ApplicationContext context: Context): SessionManager {
+        return SessionManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideIISApi(sessionManager: SessionManager): IISApi {
 
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(ReceivedCookieInterceptor(sessionManager))
             .build()
 
         return Retrofit.Builder()
@@ -58,7 +70,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideIISRepository(api: IISApi, db: IISDatabase): IISRepository {
-        return IISRepositoryImpl(api, db.dao)
+    fun provideIISRepository(
+        api: IISApi,
+        db: IISDatabase,
+        sessionManager: SessionManager
+    ): IISRepository {
+        return IISRepositoryImpl(api, db.dao, sessionManager)
     }
 }

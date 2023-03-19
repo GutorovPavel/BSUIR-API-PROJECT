@@ -1,5 +1,6 @@
 package com.example.bsuirmentors.presentation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -14,12 +15,12 @@ import com.example.bsuirmentors.presentation.components.BottomBarScreen
 import com.example.bsuirmentors.presentation.components.BottomNavGraph
 import com.example.bsuirmentors.presentation.components.CustomAppBar
 import com.example.bsuirmentors.presentation.scheduleLists.ScheduleListScreen
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @Composable
 fun MainScreen() {
 
     val navController = rememberNavController()
-
     BottomNavGraph(navController = navController)
 }
 

@@ -22,6 +22,7 @@ class GetAllMentorsUseCase @Inject constructor(
         try {
             emit(Resource.Loading())
             val remoteMentors = repository.getMentors().map { it.toMentor() }
+            repository.clearMentorsFromLocal()
             repository.insertMentorsToLocal(remoteMentors.map { it.toMentorEntity() })
 
             val localMentors = repository.getMentorsFromLocal().map { it.toMentor() }

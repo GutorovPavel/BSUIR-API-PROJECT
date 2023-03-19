@@ -36,9 +36,7 @@ fun BottomNavGraph(
             LoginScreen(navController)
         }
         composable(route = DefaultScreen.ProfileScreen.route) {
-            val currentUser =
-                navController.previousBackStackEntry?.savedStateHandle?.get<AuthUserDto>("user")
-            currentUser?.let { it1 -> ProfileScreen(navController, user = it1) }
+            ProfileScreen(navController = navController)
         }
     }
 }

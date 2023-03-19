@@ -22,34 +22,8 @@ class LoginViewModel @Inject constructor(
     fun saveAuthToken(username: String, password: String) {
         CoroutineScope(Dispatchers.IO).launch {
 
-            val user = repository.login(LoginRequest(username, password))
-            _state.value = LoginState(user = user)
+            repository.login(LoginRequest(username, password))
 
-
-//            repository.login(LoginRequest(username, password))
-//                .enqueue(object : Callback<LoginResponse> {
-//                    override fun onResponse(
-//                        call: Call<LoginResponse>,
-//                        response: Response<LoginResponse>
-//                    ) {
-//                        val loginResponse = response.body()
-//                        if (loginResponse != null) {
-//                            Log.e("status", loginResponse.user.email)
-//                        } else {
-//                            Log.e("response", "error")
-//                        }
-//
-//
-//                        if (loginResponse?.statusCode == 200) {
-//                            Log.e("Main", loginResponse.authToken)
-//                            sessionManager.saveAuthToken(loginResponse.authToken)
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-//                        //Error
-//                    }
-//                })
         }
     }
 }
