@@ -9,16 +9,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.bsuirmentors.common.Resource
 import com.example.bsuirmentors.data.util.SessionManager
 import com.example.bsuirmentors.domain.usecases.GetPersonalCvUseCase
+import com.example.bsuirmentors.domain.usecases.LogoutUseCase
 import com.example.bsuirmentors.presentation.schedule.ScheduleState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class PersonalCvViewModel @Inject constructor(
     private val getPersonalCvUseCase: GetPersonalCvUseCase,
+    private val logoutUseCase: LogoutUseCase
 ): ViewModel() {
 
 
@@ -27,6 +30,12 @@ class PersonalCvViewModel @Inject constructor(
 
     init {
         getPersonalCv()
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            logoutUseCase.logout()
+        }
     }
 
     private fun getPersonalCv() {

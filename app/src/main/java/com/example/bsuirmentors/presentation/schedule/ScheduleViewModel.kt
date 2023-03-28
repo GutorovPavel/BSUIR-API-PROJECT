@@ -21,8 +21,11 @@ class ScheduleViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private val _state = mutableStateOf(ScheduleState())
-    val state: State<ScheduleState> = _state
+    private val _scheduleState = mutableStateOf(ScheduleState())
+    val scheduleState: State<ScheduleState> = _scheduleState
+
+    private val _currentWeekState = mutableStateOf(CurrentWeekState())
+    val currentWeekState: State<CurrentWeekState> = _currentWeekState
 
     init {
         savedStateHandle.get<String>(Constants.PARAM_STUDENT_GROUP)?.let{
@@ -35,13 +38,13 @@ class ScheduleViewModel @Inject constructor(
         getCurrentWeekUseCase().onEach {
             when(it) {
                 is Resource.Success -> {
-                    _state.value = ScheduleState(currentWeek = it.data)
+                    _currentWeekState.value = CurrentWeekState(currentWeek = it.data)
                 }
                 is Resource.Error -> {
-                    _state.value = ScheduleState(error = it.message ?: "An unexpected error occurred...")
+                    _currentWeekState.value = CurrentWeekState(error = it.message ?: "An unexpected error occurred...")
                 }
                 is Resource.Loading -> {
-                    _state.value = ScheduleState(isLoading = true)
+                    _currentWeekState.value = CurrentWeekState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)
@@ -51,13 +54,13 @@ class ScheduleViewModel @Inject constructor(
         getScheduleByGroupUseCase(studentGroup).onEach {
             when(it) {
                 is Resource.Success -> {
-                    _state.value = ScheduleState(schedule = it.data)
+                    _scheduleState.value = ScheduleState(schedule = it.data)
                 }
                 is Resource.Error -> {
-                    _state.value = ScheduleState(error = it.message ?: "An unexpected error occurred...")
+                    _scheduleState.value = ScheduleState(error = it.message ?: "An unexpected error occurred...")
                 }
                 is Resource.Loading -> {
-                    _state.value = ScheduleState(isLoading = true)
+                    _scheduleState.value = ScheduleState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)

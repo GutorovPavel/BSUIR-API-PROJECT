@@ -29,6 +29,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -69,6 +74,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha08"
     implementation "com.google.accompanist:accompanist-flowlayout:0.17.0"
+    implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
     implementation("io.coil-kt:coil-compose:2.2.2")
 
     // Coroutines
@@ -95,11 +101,11 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 
     // Room
-    implementation "androidx.room:room-runtime:2.3.0"
-    kapt "androidx.room:room-compiler:2.3.0"
+    implementation "androidx.room:room-runtime:2.5.1"
+    kapt "androidx.room:room-compiler:2.5.1"
 
     // Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:2.3.0"
+    implementation "androidx.room:room-ktx:2.5.1"
 
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"

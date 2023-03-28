@@ -1,14 +1,12 @@
 package com.example.bsuirmentors.domain.repository
 
-import android.content.Context
 import com.example.bsuirmentors.data.local.entities.GroupEntity
+import com.example.bsuirmentors.data.local.entities.LoginRequestEntity
 import com.example.bsuirmentors.data.local.entities.MentorEntity
 import com.example.bsuirmentors.data.remote.dto.*
 import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
 import com.example.bsuirmentors.data.remote.dto.login.LoginRequest
-import com.example.bsuirmentors.data.remote.dto.login.LoginResponse
 import com.example.bsuirmentors.data.remote.dto.profile.PersonalCvDto
-import retrofit2.Call
 
 interface IISRepository {
 
@@ -30,6 +28,15 @@ interface IISRepository {
 
     //User
     suspend fun login(loginRequest: LoginRequest): AuthUserDto
-    suspend fun getPersonalCv(): PersonalCvDto
+    suspend fun logout(cookie: String)
+    suspend fun getPersonalCv(cookie: String?): PersonalCvDto
+
+    //Login
+    suspend fun getCookie(): String?
+    suspend fun setCookie(cookie: String?)
+    suspend fun deleteCookie()
+    suspend fun getLoginAndPassword(): LoginRequestEntity?
+    suspend fun setLoginAndPassword(username: String, password: String)
+    suspend fun deleteLoginAndPassword()
 
 }

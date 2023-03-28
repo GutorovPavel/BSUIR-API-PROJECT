@@ -108,15 +108,11 @@ fun ScheduleListScreen(
             CustomAppBar(
                 leftIcon = {
                     IconButton(onClick = {
-                        if(sessionManager.fetchCookie()?.isEmpty() == true)
-                            navController.navigate(DefaultScreen.LoginScreen.route)
-                        else
-                            navController.navigate(DefaultScreen.ProfileScreen.route)
+                        scope.launch {
+                            bottomSheetState.show()
+                        }
                     }) {
-                        Icon(
-                            imageVector = Icons.Default.AccountCircle,
-                            contentDescription = "loginButton"
-                        )
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = "menuButton")
                     }
                 },
                 actions = {
@@ -130,11 +126,16 @@ fun ScheduleListScreen(
                         }
                     }
                     IconButton(onClick = {
-                        scope.launch {
-                            bottomSheetState.show()
+                        navController.navigate(DefaultScreen.ProfileScreen.route) {
+                            popUpTo(DefaultScreen.ScheduleListScreen.route) {
+                                inclusive = true
+                            }
                         }
                     }) {
-                        Icon(imageVector = Icons.Default.Menu, contentDescription = "menuButton")
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "ProfileButton"
+                        )
                     }
                 },
                 title = "IIS BSUIR",

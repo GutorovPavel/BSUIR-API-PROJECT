@@ -30,22 +30,22 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    @Singleton
-    fun provideSessionManager(@ApplicationContext context: Context): SessionManager {
-        return SessionManager(context)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideSessionManager(@ApplicationContext context: Context): SessionManager {
+//        return SessionManager(context)
+//    }
 
     @Provides
     @Singleton
-    fun provideIISApi(sessionManager: SessionManager): IISApi {
+    fun provideIISApi(db: IISDatabase): IISApi {
 
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
-            .addInterceptor(ReceivedCookieInterceptor(sessionManager))
+            .addInterceptor(ReceivedCookieInterceptor(db.dao))
             .build()
 
         return Retrofit.Builder()
@@ -73,8 +73,7 @@ object AppModule {
     fun provideIISRepository(
         api: IISApi,
         db: IISDatabase,
-        sessionManager: SessionManager
     ): IISRepository {
-        return IISRepositoryImpl(api, db.dao, sessionManager)
+        return IISRepositoryImpl(api, db.dao)
     }
 }

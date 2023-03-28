@@ -2,8 +2,8 @@ package com.example.bsuirmentors.presentation.schedule
 
 import com.example.bsuirmentors.domain.models.Schedule
 
-data class ScheduleState(
+data class CurrentWeekState(
     val isLoading: Boolean = false,
-    val schedule: Schedule? = null,
+    val currentWeek: Int? = null,
     val error: String = ""
 )

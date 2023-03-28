@@ -1,5 +1,6 @@
 package com.example.bsuirmentors.presentation.components
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,9 +34,11 @@ fun BottomNavGraph(
             ScheduleScreen(navController)
         }
         composable(route = DefaultScreen.LoginScreen.route) {
+            BackHandler(true) {}
             LoginScreen(navController)
         }
         composable(route = DefaultScreen.ProfileScreen.route) {
+            BackHandler(true) {}
             ProfileScreen(navController = navController)
         }
     }

@@ -33,7 +33,10 @@ interface IISApi {
     @POST("v1/auth/login")
     suspend fun login(@Body request: LoginRequest): AuthUserDto
 
+    @GET("v1/auth/logout")
+    suspend fun logout(@Header("Cookie") cookie: String)
+
     @GET("v1/profiles/personal-cv")
-    suspend fun getPersonalCv(@Header("Cookie") cookie: MutableSet<String>): PersonalCvDto
+    suspend fun getPersonalCv(@Header("Cookie") cookie: String?): PersonalCvDto
 
 }

@@ -32,8 +32,17 @@ fun ScheduleScreen(
     navController: NavController,
     viewModel: ScheduleViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
+    val state = viewModel.scheduleState.value
+    val week = listOf(
+        state.schedule?.schedules?.понедельник?: emptyList(),
+        state.schedule?.schedules?.вторник?: emptyList(),
+        state.schedule?.schedules?.среда?: emptyList(),
+        state.schedule?.schedules?.четверг?: emptyList(),
+        state.schedule?.schedules?.пятница?: emptyList(),
+        state.schedule?.schedules?.суббота?: emptyList()
+    )
     val monday = state.schedule?.schedules?.понедельник?: emptyList()
+    val currentWeek = viewModel.currentWeekState.value.currentWeek
 
     Scaffold(
         topBar = {
@@ -72,63 +81,74 @@ fun ScheduleScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             } else {
                 LazyColumn {
-                    items(monday) {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 14.dp, vertical = 4.dp),
-                            backgroundColor = if (isSystemInDarkTheme()) OnDarkBG else OnLightBg,
-                            shape = RoundedCornerShape(8.dp)
-
-                        ) {
-
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                    item { Text(text = "Неделя: $currentWeek")}
+                    week.forEach { day ->
+                        item { Text(text = "") }
+                        items(day) {
+                            if(
+                                it.weekNumber.contains(currentWeek) &&
+                                it.lessonTypeAbbrev != "Экзамен" &&
+                                it.lessonTypeAbbrev != "Консультация"
                             ) {
-                                Row {
-                                    Column(horizontalAlignment = Alignment.End) {
-                                        Text(
-                                            text = it.startLessonTime,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 20.sp
-                                        )
-                                        Text(text = it.endLessonTime)
-                                    }
-                                    Box(
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 14.dp, vertical = 4.dp),
+                                    backgroundColor = if (isSystemInDarkTheme()) OnDarkBG else OnLightBg,
+                                    shape = RoundedCornerShape(8.dp)
+
+                                ) {
+
+                                    Row(
                                         modifier = Modifier
-                                            .padding(horizontal = 8.dp)
-                                            .background(
-                                                when (it.lessonTypeAbbrev) {
-                                                    "ЛК" -> Color.Green
-                                                    "ПЗ" -> Color.Red
-                                                    "ЛР" -> Color.Yellow
-                                                    "Экзамен" -> Color.Blue
-                                                    else -> Color.Gray
-                                                }
+                                            .fillMaxWidth()
+                                            .padding(8.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Row {
+                                            Column(horizontalAlignment = Alignment.End) {
+                                                Text(
+                                                    text = it.startLessonTime,
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 20.sp
+                                                )
+                                                Text(text = it.endLessonTime)
+                                            }
+                                            Box(
+                                                modifier = Modifier
+                                                    .padding(horizontal = 8.dp)
+                                                    .background(
+                                                        when (it.lessonTypeAbbrev) {
+                                                            "ЛК" -> Color.Green
+                                                            "ПЗ" -> Color.Red
+                                                            "ЛР" -> Color.Yellow
+                                                            else -> {
+                                                                Color.Gray
+                                                            }
+                                                        }
+                                                    )
+                                                    .width(6.dp)
+                                                    .height(54.dp)
                                             )
-                                            .width(6.dp)
-                                            .height(54.dp)
-                                    )
-                                    Column {
-                                        Text(
-                                            text = it.subject + " " + it.numSubgroup.toString(),
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 20.sp
-                                        )
-                                        it.auditories.forEach {
-                                            Text(text = it)
+                                            Column {
+                                                Text(
+                                                    text = it.subject + " " + it.numSubgroup.toString(),
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 20.sp
+                                                )
+                                                it.auditories.forEach { auditorium ->
+                                                    Text(text = auditorium)
+                                                }
+                                            }
+                                        }
+                                        it.employees.forEach { employee ->
+                                            MentorAvatar(
+                                                painter = rememberAsyncImagePainter(model = employee.photoLink),
+                                                size = 50
+                                            )
                                         }
                                     }
-                                }
-                                it.employees.forEach {
-                                    MentorAvatar(
-                                        painter = rememberAsyncImagePainter(model = it.photoLink),
-                                        size = 50
-                                    )
                                 }
                             }
                         }

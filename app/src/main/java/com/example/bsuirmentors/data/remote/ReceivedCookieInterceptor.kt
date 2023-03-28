@@ -1,18 +1,19 @@
 package com.example.bsuirmentors.data.remote
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import android.util.Log
-import com.example.bsuirmentors.data.util.SessionManager
+import com.example.bsuirmentors.data.local.IISDao
+import com.example.bsuirmentors.data.local.entities.CookieEntity
+import com.example.bsuirmentors.domain.repository.IISRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.util.prefs.Preferences
-
 
 
 class ReceivedCookieInterceptor(
-    private val sessionManager: SessionManager
+//    private val sessionManager: SessionManager
+    private val dao: IISDao
 ): Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -23,9 +24,13 @@ class ReceivedCookieInterceptor(
             for(header in originalResponse.headers("Set-Cookie"))
                 cookies.add(header)
 
-            sessionManager.saveCookie(cookies)
-
-            Log.e("Main", sessionManager.fetchCookie()?.first().toString())
+            runBlocking {
+                withContext(Dispatchers.IO) {
+                    dao.setCookie(CookieEntity(cookies.toString().drop(1).dropLast(1)))
+                }
+            }
+//            sessionManager.saveCookie(cookies)
+//            Log.e("Main", sessionManager.fetchCookie()?.first().toString())
         }
         return originalResponse
     }

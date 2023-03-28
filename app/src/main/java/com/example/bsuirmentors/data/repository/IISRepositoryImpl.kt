@@ -1,8 +1,9 @@
 package com.example.bsuirmentors.data.repository
 
-import android.content.Context
 import com.example.bsuirmentors.data.local.IISDao
+import com.example.bsuirmentors.data.local.entities.CookieEntity
 import com.example.bsuirmentors.data.local.entities.GroupEntity
+import com.example.bsuirmentors.data.local.entities.LoginRequestEntity
 import com.example.bsuirmentors.data.local.entities.MentorEntity
 import com.example.bsuirmentors.data.remote.IISApi
 import com.example.bsuirmentors.data.remote.dto.*
@@ -16,7 +17,6 @@ import javax.inject.Inject
 class IISRepositoryImpl @Inject constructor(
     private val api: IISApi,
     private val dao: IISDao,
-    private val sessionManager: SessionManager
 ): IISRepository {
 
     //Groups
@@ -68,9 +68,35 @@ class IISRepositoryImpl @Inject constructor(
         return api.login(loginRequest)
     }
 
-    override suspend fun getPersonalCv(): PersonalCvDto {
+    override suspend fun logout(cookie: String) {
+        api.logout(cookie)
+    }
 
-        val cookie = sessionManager.fetchCookie()
-        return cookie?.let { api.getPersonalCv(it) }!!
+    override suspend fun getPersonalCv(cookie: String?): PersonalCvDto {
+        return api.getPersonalCv(cookie)
+    }
+
+    override suspend fun getCookie(): String? {
+        return dao.getCookie()?.cookie
+    }
+
+    override suspend fun setCookie(cookie: String?) {
+        dao.setCookie(CookieEntity(cookie))
+    }
+
+    override suspend fun deleteCookie() {
+        dao.deleteCookie()
+    }
+
+    override suspend fun getLoginAndPassword(): LoginRequestEntity? {
+        return dao.getLoginAndPassword()
+    }
+
+    override suspend fun setLoginAndPassword(username: String, password: String) {
+        dao.setLoginAndPassword(LoginRequestEntity(username, password))
+    }
+
+    override suspend fun deleteLoginAndPassword() {
+        dao.deleteLoginAndPassword()
     }
 }
