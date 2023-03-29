@@ -7,10 +7,11 @@ import com.example.bsuirmentors.data.local.entities.LoginRequestEntity
 import com.example.bsuirmentors.data.local.entities.MentorEntity
 import com.example.bsuirmentors.data.remote.IISApi
 import com.example.bsuirmentors.data.remote.dto.*
+import com.example.bsuirmentors.data.remote.dto.gradeBook.GradeBookDto
 import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
 import com.example.bsuirmentors.data.remote.dto.login.LoginRequest
+import com.example.bsuirmentors.data.remote.dto.omissions.OmissionDto
 import com.example.bsuirmentors.data.remote.dto.profile.PersonalCvDto
-import com.example.bsuirmentors.data.util.SessionManager
 import com.example.bsuirmentors.domain.repository.IISRepository
 import javax.inject.Inject
 
@@ -74,6 +75,14 @@ class IISRepositoryImpl @Inject constructor(
 
     override suspend fun getPersonalCv(cookie: String?): PersonalCvDto {
         return api.getPersonalCv(cookie)
+    }
+
+    override suspend fun getGradeBook(cookie: String?): GradeBookDto {
+        return api.getGradeBook(cookie)
+    }
+
+    override suspend fun getOmissions(cookie: String?): OmissionDto {
+        return api.getOmissions(cookie)
     }
 
     override suspend fun getCookie(): String? {

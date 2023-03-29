@@ -4,8 +4,10 @@ import com.example.bsuirmentors.data.local.entities.GroupEntity
 import com.example.bsuirmentors.data.local.entities.LoginRequestEntity
 import com.example.bsuirmentors.data.local.entities.MentorEntity
 import com.example.bsuirmentors.data.remote.dto.*
+import com.example.bsuirmentors.data.remote.dto.gradeBook.GradeBookDto
 import com.example.bsuirmentors.data.remote.dto.login.AuthUserDto
 import com.example.bsuirmentors.data.remote.dto.login.LoginRequest
+import com.example.bsuirmentors.data.remote.dto.omissions.OmissionDto
 import com.example.bsuirmentors.data.remote.dto.profile.PersonalCvDto
 
 interface IISRepository {
@@ -30,6 +32,8 @@ interface IISRepository {
     suspend fun login(loginRequest: LoginRequest): AuthUserDto
     suspend fun logout(cookie: String)
     suspend fun getPersonalCv(cookie: String?): PersonalCvDto
+    suspend fun getGradeBook(cookie: String?): GradeBookDto
+    suspend fun getOmissions(cookie: String?): OmissionDto
 
     //Login
     suspend fun getCookie(): String?

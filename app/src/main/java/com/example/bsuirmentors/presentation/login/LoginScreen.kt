@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,17 +14,22 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.bsuirmentors.presentation.components.DefaultScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.bsuirmentors.presentation.components.Graph
+import com.example.bsuirmentors.presentation.components.RootScreen
+import com.example.bsuirmentors.presentation.personalCabinet.navigation.PersonalScreen
+import com.example.bsuirmentors.presentation.scheduleCabinet.navigation.DefaultScreen
 import com.example.bsuirmentors.presentation.ui.theme.OnDarkBG
 import com.example.bsuirmentors.presentation.ui.theme.OnLightBg
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
+    navController: NavController = rememberNavController(),
+    onClick:() -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
 
-    val state = viewModel.state.value
+//    val state = viewModel.state.value
 
     var usernameText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
@@ -39,9 +45,9 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Card(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .background(if (isSystemInDarkTheme()) OnDarkBG else OnLightBg),
+                modifier = Modifier.padding(20.dp),
+                backgroundColor = if (isSystemInDarkTheme()) OnDarkBG else OnLightBg,
+                shape = RoundedCornerShape(10.dp)
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp),
@@ -89,11 +95,7 @@ fun LoginScreen(
                         Button(
                             onClick = {
                                 viewModel.login(usernameText, passwordText)
-                                navController.navigate(DefaultScreen.ProfileScreen.route) {
-                                    popUpTo(DefaultScreen.LoginScreen.route) {
-                                        inclusive = true
-                                    }
-                                }
+                                onClick()
                             },
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = MaterialTheme.colors.secondary,
@@ -110,11 +112,7 @@ fun LoginScreen(
             Text(
                 text = "Вернуться к расписанию",
                 modifier = Modifier.clickable {
-                    navController.navigate(DefaultScreen.ScheduleListScreen.route) {
-                        popUpTo(DefaultScreen.LoginScreen.route) {
-                            inclusive = true
-                        }
-                    }
+                    navController.navigate(Graph.SCHEDULE)
                 },
                 color = Color.White,
                 fontStyle = FontStyle.Italic

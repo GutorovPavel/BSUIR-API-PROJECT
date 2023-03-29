@@ -14,7 +14,7 @@ val OnLightBg = Color(0xFFFFFFFF)
 val DarkBG = Color(0xFF2B2B2B)
 val OnDarkBG = Color(0xFF111111)
 val Secondary = Color(0xFF6786B8)
-val Primary = Color(0xFF34486B)
+val Primary = Color(0xFF324668)
 val DarkPrimary = Color(0xFF202020)
 
 
